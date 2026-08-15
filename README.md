@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/main.png" alt="UltimateVirtualSpawner" width="720">
+  <img src="Images/main.png" alt="UltimateVirtualSpawner" width="720">
 </p>
 
 <h1 align="center">UltimateVirtualSpawner</h1>
@@ -44,12 +44,27 @@ Escape hatches live in `config.yml` under `COMPATIBILITY`:
 
 ## Screenshots
 
-<p align="center">
-  <img src="images/uvs1.png" alt="UltimateVirtualSpawner screenshot 1" width="32%">
-  <img src="images/uvs2.png" alt="UltimateVirtualSpawner screenshot 2" width="32%">
-  <img src="images/gif1.gif" alt="UltimateVirtualSpawner Gif 1" width="32%">
-  <img src="images/gif2.gif" alt="UltimateVirtualSpawner Gif 2" width="32%">
-  </p>
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <img src="Images/uvs1.png" alt="Spawner menu, stacking and drop filters" width="100%">
+    </td>
+    <td width="50%" valign="top">
+      <img src="Images/uvs2.png" alt="Admin panel and selling" width="100%">
+    </td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <img src="Images/gif1.gif" alt="Placing and stacking a spawner" width="100%">
+    </td>
+    <td width="50%" valign="top">
+      <img src="Images/gif2.gif" alt="Collecting stored loot and XP" width="100%">
+    </td>
+  </tr>
+</table>
 
 ## Commands
 
