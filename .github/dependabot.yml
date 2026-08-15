@@ -1,0 +1,70 @@
+# Dependabot Configuration for UltimateVirtualSpawner
+# Reference: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  # Maintain Java / Maven dependencies in pom.xml
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"
+      timezone: "Etc/UTC"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "dependabot"
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+
+    # Group related updates to prevent PR clutter
+    groups:
+      maven-plugins:
+        patterns:
+          - "org.apache.maven.plugins:*"
+      test-dependencies:
+        patterns:
+          - "org.junit.jupiter:*"
+          - "org.junit.platform:*"
+
+    # Ignore core Minecraft server API version bumps to prevent unintended API breakage.
+    # Production artifacts compile against the oldest supported API (see pom.xml properties),
+    # so these targets must be bumped by hand alongside the compatibility range in
+    # pom.xml, config.yml and README.md.
+    ignore:
+      - dependency-name: "org.spigotmc:spigot-api"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+      - dependency-name: "dev.folia:folia-api"
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
+      - dependency-name: "me.clip:placeholderapi"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "com.github.MilkBowl:VaultAPI"
+        update-types: ["version-update:semver-major"]
+
+  # Maintain GitHub Actions workflows in .github/workflows/
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"
+      timezone: "Etc/UTC"
+    open-pull-requests-limit: 5
+    labels:
+      - "ci"
+      - "dependabot"
+    commit-message:
+      prefix: "chore(ci)"
+      include: "scope"
+
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+# NOTE: the SQLite and MySQL JDBC drivers are not Maven dependencies. They are downloaded at
+# runtime through the "libraries" block in plugin.yml, driven by the sqlite.version and
+# mysql.version properties in pom.xml, so Dependabot cannot see them. Bump those properties
+# manually.

@@ -1,0 +1,402 @@
+# ============================================================================
+#  UltimateVirtualSpawner - spawner behaviour, drop tables and sell prices
+#
+#  A managed spawner never spawns real mobs. Every cycle it rolls the drop
+#  table below and deposits the result into its own virtual storage, which
+#  players open by right-clicking the spawner block.
+# ============================================================================
+
+# Configuration section for Settings.
+SETTINGS:
+  # Determines whether Enabled is enabled or disabled. Available options: true, false
+  ENABLED: true
+  # The Access Mode setting. Available options: OWNER_ONLY, OWNER_AND_TEAM, PUBLIC
+  ACCESS_MODE: OWNER_ONLY
+  # Determines whether spawner stealing (breaking or accessing other players' spawners) is allowed globally. Available options: true, false
+  ALLOW_SPAWNER_STEAL: false
+  # The numerical value for Generation Interval Seconds. Available options: Any valid integer
+  GENERATION_INTERVAL_SECONDS: 5
+  # Determines whether Process Only Loaded Chunks is enabled or disabled. Available options: true, false
+  PROCESS_ONLY_LOADED_CHUNKS: true
+  # Determines whether Require Player Nearby is enabled or disabled. Available options: true, false
+  REQUIRE_PLAYER_NEARBY: false
+  # The numerical value for Player Nearby Radius. Available options: Any valid integer
+  PLAYER_NEARBY_RADIUS: 16
+  # The numerical value for Max Stack Per Block. Available options: Any valid integer
+  MAX_STACK_PER_BLOCK: 100000
+  # The numerical value for Storage Cap Per Loot Key. Available options: Any valid integer
+  STORAGE_CAP_PER_LOOT_KEY: 1000000
+  # Determines whether Drop On Break If Inventory Full is enabled or disabled. Available options: true, false
+  DROP_ON_BREAK_IF_INVENTORY_FULL: true
+  # Determines whether a Silk Touch pickaxe is required to break and collect spawners.
+  # Applies to vanilla spawners as well. Only Creative mode and the ultimatevirtualspawner.spawner.bypass permission are exempt (operators are not).
+  REQUIRE_SILK_TOUCH: true
+  # Determines whether physical vanilla mob spawning is cancelled (set to true for virtual storage anti-lag drops, set to false to allow physical mobs to spawn in world).
+  # When true the vanilla spawn logic is also switched off inside the block itself, so a managed
+  # spawner can never spawn real mobs - not after a restart, not if this plugin is removed.
+  # The block keeps ticking, so the mob inside it still spins as usual.
+  CANCEL_MOB_SPAWN: true
+  # Determines whether XP generation and XP collection is enabled for spawners. Available options: true, false
+  XP_ENABLED: true
+  # XP generated per cycle, per spawner in the stack. Overridable per type below.
+  XP_PER_CYCLE: 3.7
+  # Pull stored loot into a hopper placed directly underneath the spawner.
+  HOPPER_EXTRACTION:
+    ENABLED: false
+    # Items moved per material, per generation cycle.
+    AMOUNT_PER_CYCLE: 64
+# Configuration section for Anti Esp.
+ANTI_ESP:
+  # Determines whether Enabled is enabled or disabled. Available options: true, false
+  ENABLED: true
+  # The numerical value for Reveal Radius. Available options: Any valid integer
+  REVEAL_RADIUS: 7
+  # The numerical value for Owner See Radius. Available options: Any valid integer
+  OWNER_SEE_RADIUS: 9
+  # The numerical value for Tracking Radius. Available options: Any valid integer
+  TRACKING_RADIUS: 128
+  # Determines whether Require Line Of Sight is enabled or disabled. Available options: true, false
+  REQUIRE_LINE_OF_SIGHT: true
+  # The text or value for Staff Bypass Permission. Available options: Any valid string text
+  STAFF_BYPASS_PERMISSION: ultimatevirtualspawner.admin.spawner.seeall
+  # Configuration section for Camouflage.
+  CAMOUFLAGE:
+    # The text or value for Overworld. Available options: Any valid string text
+    OVERWORLD: DEEPSLATE
+    # The text or value for Nether. Available options: Any valid string text
+    NETHER: NETHERRACK
+    # The text or value for The End. Available options: Any valid string text
+    THE_END: END_STONE
+# ── Selling ─────────────────────────────────────────────────────────────────
+# Requires Vault plus an economy plugin. A material with no price here (and no
+# SELL_PRICE override in its drop entry below) simply cannot be sold.
+SELL:
+  ENABLED: true
+  # Applied to every payout.
+  MULTIPLIER: 1.0
+  # Highest multiplier the player has permission for is applied on top of
+  # MULTIPLIER. Remove the entries you do not want.
+  PERMISSION_MULTIPLIERS:
+    ultimatevirtualspawner.sell.multiplier.vip: 1.25
+    ultimatevirtualspawner.sell.multiplier.mvp: 1.5
+    ultimatevirtualspawner.sell.multiplier.elite: 2.0
+  # Price paid per single item.
+  PRICES:
+    PORKCHOP: 2.5
+    BEEF: 2.5
+    LEATHER: 3.0
+    ROTTEN_FLESH: 0.75
+    IRON_INGOT: 12.0
+    CARROT: 1.5
+    POTATO: 1.5
+    STRING: 2.0
+    SPIDER_EYE: 3.5
+    BONE: 2.0
+    ARROW: 1.25
+    GUNPOWDER: 4.0
+    GOLD_NUGGET: 1.5
+    GOLD_INGOT: 13.5
+    BLAZE_ROD: 18.0
+    POPPY: 0.5
+
+# ── Spawner types ───────────────────────────────────────────────────────────
+TYPES:
+  # Configuration section for Pig.
+  PIG:
+    # The text or value for Display Name. Available options: Any valid string text
+    DISPLAY_NAME: '&dPig Spawner'
+    # The text or value for Entity Type. Available options: Any valid string text
+    ENTITY_TYPE: PIG
+    # Custom head texture URL or Base64 (leave empty to use default mob head).
+    HEAD_TEXTURE: 'https://textures.minecraft.net/texture/d875eb45aca34a4d24c3dc1395fc020ccf37f825a17b054a22fd24b189c24c'
+    # The text or value for Icon Material. Available options: Any valid string text
+    ICON_MATERIAL: PORKCHOP
+    # The numerical value for Base Items Per Cycle. Available options: Any valid integer
+    BASE_ITEMS_PER_CYCLE: 1
+    # Configuration section for Drops.
+    DROPS:
+      # Configuration section for Porkchop.
+      PORKCHOP:
+        MATERIAL: PORKCHOP
+        # The numerical value for Min. Available options: Any valid integer
+        MIN: 1
+        # The numerical value for Max. Available options: Any valid integer
+        MAX: 3
+        # The decimal value for Chance. Available options: Any decimal number
+        CHANCE: 1.0
+      # Configuration section for Leather.
+      LEATHER:
+        MATERIAL: LEATHER
+        # The numerical value for Min. Available options: Any valid integer
+        MIN: 0
+        # The numerical value for Max. Available options: Any valid integer
+        MAX: 1
+        # The decimal value for Chance. Available options: Any decimal number
+        CHANCE: 0.35
+  # Configuration section for Cow.
+  COW:
+    # The text or value for Display Name. Available options: Any valid string text
+    DISPLAY_NAME: '&dCow Spawner'
+    # The text or value for Entity Type. Available options: Any valid string text
+    ENTITY_TYPE: COW
+    # Custom head texture URL or Base64 (leave empty to use default mob head).
+    HEAD_TEXTURE: ''
+    # The text or value for Icon Material. Available options: Any valid string text
+    ICON_MATERIAL: BEEF
+    # The numerical value for Base Items Per Cycle. Available options: Any valid integer
+    BASE_ITEMS_PER_CYCLE: 1
+    # The decimal value for XP generated per spawner cycle per stack.
+    XP_PER_CYCLE: 3.7
+    # Configuration section for Drops.
+    DROPS:
+      # Configuration section for Beef.
+      BEEF:
+        MATERIAL: BEEF
+        # The numerical value for Min. Available options: Any valid integer
+        MIN: 1
+        # The numerical value for Max. Available options: Any valid integer
+        MAX: 3
+        # The decimal value for Chance. Available options: Any decimal number
+        CHANCE: 1.0
+      # Configuration section for Leather.
+      LEATHER:
+        MATERIAL: LEATHER
+        # The numerical value for Min. Available options: Any valid integer
+        MIN: 1
+        # The numerical value for Max. Available options: Any valid integer
+        MAX: 2
+        # The decimal value for Chance. Available options: Any decimal number
+        CHANCE: 0.8
+  # Configuration section for Zombie.
+  ZOMBIE:
+    # The text or value for Display Name. Available options: Any valid string text
+    DISPLAY_NAME: '&dZombie Spawner'
+    # The text or value for Entity Type. Available options: Any valid string text
+    ENTITY_TYPE: ZOMBIE
+    # Custom head texture URL or Base64 (leave empty to use default mob head).
+    HEAD_TEXTURE: ''
+    # The text or value for Icon Material. Available options: Any valid string text
+    ICON_MATERIAL: ROTTEN_FLESH
+    # The numerical value for Base Items Per Cycle. Available options: Any valid integer
+    BASE_ITEMS_PER_CYCLE: 1
+    # Configuration section for Drops.
+    DROPS:
+      # Configuration section for Rotten Flesh.
+      ROTTEN_FLESH:
+        MATERIAL: ROTTEN_FLESH
+        # The numerical value for Min. Available options: Any valid integer
+        MIN: 1
+        # The numerical value for Max. Available options: Any valid integer
+        MAX: 3
+        # The decimal value for Chance. Available options: Any decimal number
+        CHANCE: 1.0
+      # Configuration section for Iron Ingot.
+      IRON_INGOT:
+        MATERIAL: IRON_INGOT
+        # The numerical value for Min. Available options: Any valid integer
+        MIN: 0
+        # The numerical value for Max. Available options: Any valid integer
+        MAX: 1
+        # The decimal value for Chance. Available options: Any decimal number
+        CHANCE: 0.05
+      # Configuration section for Carrot.
+      CARROT:
+        MATERIAL: CARROT
+        # The numerical value for Min. Available options: Any valid integer
+        MIN: 0
+        # The numerical value for Max. Available options: Any valid integer
+        MAX: 1
+        # The decimal value for Chance. Available options: Any decimal number
+        CHANCE: 0.025
+      # Configuration section for Potato.
+      POTATO:
+        MATERIAL: POTATO
+        # The numerical value for Min. Available options: Any valid integer
+        MIN: 0
+        # The numerical value for Max. Available options: Any valid integer
+        MAX: 1
+        # The decimal value for Chance. Available options: Any decimal number
+        CHANCE: 0.025
+  # Configuration section for Spider.
+  SPIDER:
+    # The text or value for Display Name. Available options: Any valid string text
+    DISPLAY_NAME: '&dSpider Spawner'
+    # The text or value for Entity Type. Available options: Any valid string text
+    ENTITY_TYPE: SPIDER
+    # Custom head texture URL or Base64 (leave empty to use default mob head).
+    HEAD_TEXTURE: 'https://textures.minecraft.net/texture/cd541541daaff50896cd258bdbdd4cf80c3ba816735726078bfe393927e57f1'
+    # The text or value for Icon Material. Available options: Any valid string text
+    ICON_MATERIAL: STRING
+    # The numerical value for Base Items Per Cycle. Available options: Any valid integer
+    BASE_ITEMS_PER_CYCLE: 1
+    # Configuration section for Drops.
+    DROPS:
+      # Configuration section for String.
+      STRING:
+        MATERIAL: STRING
+        # The numerical value for Min. Available options: Any valid integer
+        MIN: 1
+        # The numerical value for Max. Available options: Any valid integer
+        MAX: 2
+        # The decimal value for Chance. Available options: Any decimal number
+        CHANCE: 1.0
+      # Configuration section for Spider Eye.
+      SPIDER_EYE:
+        MATERIAL: SPIDER_EYE
+        # The numerical value for Min. Available options: Any valid integer
+        MIN: 0
+        # The numerical value for Max. Available options: Any valid integer
+        MAX: 1
+        # The decimal value for Chance. Available options: Any decimal number
+        CHANCE: 0.4
+  # Configuration section for Skeleton.
+  SKELETON:
+    # The text or value for Display Name. Available options: Any valid string text
+    DISPLAY_NAME: '&dSkeleton Spawner'
+    # The text or value for Entity Type. Available options: Any valid string text
+    ENTITY_TYPE: SKELETON
+    # Custom head texture URL or Base64 (leave empty to use default mob head).
+    HEAD_TEXTURE: ''
+    # The text or value for Icon Material. Available options: Any valid string text
+    ICON_MATERIAL: BONE
+    # The numerical value for Base Items Per Cycle. Available options: Any valid integer
+    BASE_ITEMS_PER_CYCLE: 1
+    # Configuration section for Drops.
+    DROPS:
+      # Configuration section for Bone.
+      BONE:
+        MATERIAL: BONE
+        # The numerical value for Min. Available options: Any valid integer
+        MIN: 1
+        # The numerical value for Max. Available options: Any valid integer
+        MAX: 3
+        # The decimal value for Chance. Available options: Any decimal number
+        CHANCE: 1.0
+      # Configuration section for Arrow.
+      ARROW:
+        MATERIAL: ARROW
+        # The numerical value for Min. Available options: Any valid integer
+        MIN: 1
+        # The numerical value for Max. Available options: Any valid integer
+        MAX: 3
+        # The decimal value for Chance. Available options: Any decimal number
+        CHANCE: 1.0
+  # Configuration section for Creeper.
+  CREEPER:
+    # The text or value for Display Name. Available options: Any valid string text
+    DISPLAY_NAME: '&dCreeper Spawner'
+    # The text or value for Entity Type. Available options: Any valid string text
+    ENTITY_TYPE: CREEPER
+    # Custom head texture URL or Base64 (leave empty to use default mob head).
+    HEAD_TEXTURE: ''
+    # The text or value for Icon Material. Available options: Any valid string text
+    ICON_MATERIAL: GUNPOWDER
+    # The numerical value for Base Items Per Cycle. Available options: Any valid integer
+    BASE_ITEMS_PER_CYCLE: 1
+    # Configuration section for Drops.
+    DROPS:
+      # Configuration section for Gunpowder.
+      GUNPOWDER:
+        MATERIAL: GUNPOWDER
+        # The numerical value for Min. Available options: Any valid integer
+        MIN: 1
+        # The numerical value for Max. Available options: Any valid integer
+        MAX: 2
+        # The decimal value for Chance. Available options: Any decimal number
+        CHANCE: 1.0
+  # Configuration section for Piglin.
+  PIGLIN:
+    # The text or value for Display Name. Available options: Any valid string text
+    DISPLAY_NAME: '&dPiglin Spawner'
+    # The text or value for Entity Type. Available options: Any valid string text
+    ENTITY_TYPE: ZOMBIFIED_PIGLIN
+    # Custom head texture URL or Base64 (leave empty to use default mob head).
+    HEAD_TEXTURE: ''
+    # The text or value for Icon Material. Available options: Any valid string text
+    ICON_MATERIAL: GOLD_NUGGET
+    # The numerical value for Base Items Per Cycle. Available options: Any valid integer
+    BASE_ITEMS_PER_CYCLE: 1
+    # Configuration section for Drops.
+    DROPS:
+      # Configuration section for Rotten Flesh.
+      ROTTEN_FLESH:
+        MATERIAL: ROTTEN_FLESH
+        # The numerical value for Min. Available options: Any valid integer
+        MIN: 1
+        # The numerical value for Max. Available options: Any valid integer
+        MAX: 2
+        # The decimal value for Chance. Available options: Any decimal number
+        CHANCE: 1.0
+      # Configuration section for Gold Nugget.
+      GOLD_NUGGET:
+        MATERIAL: GOLD_NUGGET
+        # The numerical value for Min. Available options: Any valid integer
+        MIN: 1
+        # The numerical value for Max. Available options: Any valid integer
+        MAX: 4
+        # The decimal value for Chance. Available options: Any decimal number
+        CHANCE: 0.85
+      # Configuration section for Gold Ingot.
+      GOLD_INGOT:
+        MATERIAL: GOLD_INGOT
+        # The numerical value for Min. Available options: Any valid integer
+        MIN: 0
+        # The numerical value for Max. Available options: Any valid integer
+        MAX: 1
+        # The decimal value for Chance. Available options: Any decimal number
+        CHANCE: 0.06
+  # Configuration section for Blaze.
+  BLAZE:
+    # The text or value for Display Name. Available options: Any valid string text
+    DISPLAY_NAME: '&dBlaze Spawner'
+    # The text or value for Entity Type. Available options: Any valid string text
+    ENTITY_TYPE: BLAZE
+    # Custom head texture URL or Base64 (leave empty to use default mob head).
+    HEAD_TEXTURE: 'https://textures.minecraft.net/texture/b78ef2e4cf2c41a2d14bfde9caff10219f5b1bf5b35a49eb51c6467882cb5f0'
+    # The text or value for Icon Material. Available options: Any valid string text
+    ICON_MATERIAL: BLAZE_ROD
+    # The numerical value for Base Items Per Cycle. Available options: Any valid integer
+    BASE_ITEMS_PER_CYCLE: 1
+    # Configuration section for Drops.
+    DROPS:
+      # Configuration section for Blaze Rod.
+      BLAZE_ROD:
+        MATERIAL: BLAZE_ROD
+        # The numerical value for Min. Available options: Any valid integer
+        MIN: 1
+        # The numerical value for Max. Available options: Any valid integer
+        MAX: 2
+        # The decimal value for Chance. Available options: Any decimal number
+        CHANCE: 1.0
+  # Configuration section for Iron Golem.
+  IRON_GOLEM:
+    # The text or value for Display Name. Available options: Any valid string text
+    DISPLAY_NAME: '&dIron Golem Spawner'
+    # The text or value for Entity Type. Available options: Any valid string text
+    ENTITY_TYPE: IRON_GOLEM
+    # Custom head texture URL or Base64 (leave empty to use default mob head).
+    HEAD_TEXTURE: 'https://textures.minecraft.net/texture/e13f34227283796bc017244cb46557d64bd562fa9dab0e12af5d23ad699cf697'
+    # The text or value for Icon Material. Available options: Any valid string text
+    ICON_MATERIAL: IRON_INGOT
+    # The numerical value for Base Items Per Cycle. Available options: Any valid integer
+    BASE_ITEMS_PER_CYCLE: 1
+    # Configuration section for Drops.
+    DROPS:
+      # Configuration section for Iron Ingot.
+      IRON_INGOT:
+        MATERIAL: IRON_INGOT
+        # The numerical value for Min. Available options: Any valid integer
+        MIN: 3
+        # The numerical value for Max. Available options: Any valid integer
+        MAX: 5
+        # The decimal value for Chance. Available options: Any decimal number
+        CHANCE: 1.0
+      # Configuration section for Poppy.
+      POPPY:
+        MATERIAL: POPPY
+        # The numerical value for Min. Available options: Any valid integer
+        MIN: 0
+        # The numerical value for Max. Available options: Any valid integer
+        MAX: 2
+        # The decimal value for Chance. Available options: Any decimal number
+        CHANCE: 0.45

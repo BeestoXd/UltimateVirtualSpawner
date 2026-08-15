@@ -1,0 +1,166 @@
+# ============================================================================
+#  UltimateVirtualSpawner - GUI layouts
+#
+#  SLOT numbers are 0-indexed. SIZE must be a multiple of 9 (max 54).
+#  Colour codes: &a legacy, &#RRGGBB hex, <#RRGGBB>text</#RRGGBB> gradient.
+#
+#  Placeholders
+#    MAIN-MENU        {stack} {mob} {percentage} {xp} {amount} {material} {count}
+#    STORAGE-MENU     {mob} {page} {max_page} {material} {filter_status}
+#                     {prev_page} {next_page}
+#    FILTER-MENU      {mob} {material} {filter_status} {chance}
+#    SELL-CONFIRM     {price} {multiplier} {item_count} {total_items} {mob}
+#    PANEL-MENU       {world}
+# ============================================================================
+
+SPAWNER-MENUS:
+  MAIN-MENU:
+    TITLE: '{stack} {mob}'
+    SIZE: 27
+    FILLER-MATERIAL: GRAY_STAINED_GLASS_PANE
+    STORAGE-BUTTON:
+      SLOT: 11
+      MATERIAL: CHEST
+      TITLE: '&6Spawner Storage'
+      NO-ITEMS-LORE:
+      - '&7No items stored.'
+      ITEM-SUMMARY-FORMAT: '&6{amount} &f{material}'
+      MORE-ITEMS-FORMAT: '&7+ {count} more item types...'
+      FOOTER-LORE:
+      - ''
+      - '&eClick to view & collect spawner storage'
+    MOB-HEAD-BUTTON:
+      SLOT: 13
+      TITLE: '&e{stack} {mob} SPAWNERS'
+      LORE:
+      - '&e• &fClick to sell items and collect xp'
+      - '&7Storage: &e{percentage}% Filled.'
+    COLLECT-XP-BUTTON:
+      ENABLED: true
+      SLOT: 15
+      MATERIAL: EXPERIENCE_BOTTLE
+      TITLE: '&aCollect XP'
+      LORE:
+      - '&a{xp} &fXP Points'
+      - ''
+      - '&eClick to claim XP points'
+  STORAGE-MENU:
+    TITLE: '&8{mob} Spawners - {page}/{max_page}'
+    SIZE: 54
+    ITEMS-PER-PAGE: 45
+    ITEM-META:
+      TITLE: '&b{material}'
+      LORE:
+      - '&7Filter Status: {filter_status}'
+      - ''
+      - '&eLeft-Click &7to pick up'
+      - '&eRight-Click &7to pick up half / place 1'
+      - '&eShift-Left &7to collect to inventory'
+      - '&eShift-Right &7to toggle filter'
+      FILTER-ENABLED: '&aEnabled &7(Storing)'
+      FILTER-DISABLED: '&cDisabled &7(Not Storing)'
+    BACK-BUTTON:
+      SLOT: 45
+      MATERIAL: BARRIER
+      TITLE: '&cBACK'
+      LORE:
+      - '&7Return to spawner menu.'
+    FILTER-SETTINGS-BUTTON:
+      SLOT: 46
+      MATERIAL: HOPPER
+      TITLE: '&bFILTER SETTINGS'
+      LORE:
+      - '&7Manage item drops filter.'
+      - ''
+      - '&eClick to open filter settings'
+    COLLECT-ALL-BUTTON:
+      SLOT: 48
+      MATERIAL: SPECTRAL_ARROW
+      TITLE: '&eCOLLECT ALL'
+      LORE:
+      - '&e• &fCollect all loot from storage into inventory'
+    PREVIOUS-PAGE-BUTTON:
+      SLOT: 49
+      MATERIAL: ARROW
+      TITLE: '&aPREVIOUS PAGE'
+      LORE:
+      - '&fClick to go back to page {prev_page}'
+    NEXT-PAGE-BUTTON:
+      SLOT: 51
+      MATERIAL: ARROW
+      TITLE: '&aNEXT PAGE'
+      LORE:
+      - '&fClick to go to page {next_page}'
+    DROP-LOOT-BUTTON:
+      SLOT: 52
+      MATERIAL: DROPPER
+      TITLE: '&aDROP LOOT'
+      LORE:
+      - '&fClick to drop all loot on the page'
+    SELL-ALL-BUTTON:
+      SLOT: 53
+      MATERIAL: GOLD_INGOT
+      TITLE: '&aSELL ALL'
+      LORE:
+      - '&fClick to sell all mob drops!'
+  FILTER-MENU:
+    TITLE: '&8{mob} Filter Settings'
+    SIZE: 27
+    ITEM-META:
+      TITLE: '&b{material}'
+      LORE:
+      - '&7Filter Status: {filter_status}'
+      - '&7Drop Chance: &e{chance}%'
+      - ''
+      - '&eClick &7to toggle filter'
+      FILTER-ENABLED: '&aEnabled &7(Storing)'
+      FILTER-DISABLED: '&cDisabled &7(Not Storing)'
+    BACK-BUTTON:
+      SLOT: 18
+      MATERIAL: BARRIER
+      TITLE: '&cBACK'
+      LORE:
+      - '&7Return to storage menu.'
+    ENABLE-ALL-BUTTON:
+      SLOT: 25
+      MATERIAL: LIME_DYE
+      TITLE: '&aENABLE ALL'
+      LORE:
+      - '&7Enable storing all drops.'
+    DISABLE-ALL-BUTTON:
+      SLOT: 26
+      MATERIAL: RED_DYE
+      TITLE: '&cDISABLE ALL'
+      LORE:
+      - '&7Disable storing all drops.'
+  SELL-CONFIRM-MENU:
+    TITLE: '&8Confirm Sell'
+    SIZE: 27
+    CONFIRM-BUTTON:
+      SLOT: 11
+      MATERIAL: LIME_STAINED_GLASS_PANE
+      TITLE: '&aConfirm Sell'
+      LORE:
+      - '&fTotal Value: &a${price}'
+      - '&7Category Multiplier: &e{multiplier}x'
+      - ''
+      - '&eClick to confirm sale!'
+    CANCEL-BUTTON:
+      SLOT: 15
+      MATERIAL: RED_STAINED_GLASS_PANE
+      TITLE: '&cCancel'
+      LORE:
+      - '&7Cancel transaction and return to storage.'
+    INFO-ICON:
+      SLOT: 13
+      MATERIAL: GOLD_INGOT
+      TITLE: '&eSell Summary'
+      LORE:
+      - '&fEstimated Total: &a${price}'
+      - '&7Total Items: &f{item_count}'
+  PANEL-MENU:
+    TITLE: '&8Spawners'
+    SIZE: 54
+  WORLD-LIST-MENU:
+    TITLE: '&8Spawners Panel'
+    SIZE: 27

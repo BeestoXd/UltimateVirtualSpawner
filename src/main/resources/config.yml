@@ -1,0 +1,73 @@
+# ============================================================================
+#  UltimateVirtualSpawner - core settings
+#
+#  Supported server software:
+#    Paper / Spigot / Bukkit : 1.21.10 - 26.2
+#    Folia                   : 1.21.11 - 26.2
+#
+#  Spawner behaviour lives in spawners.yml, GUI layouts in menus.yml,
+#  chat text in messages.yml and sound effects in sounds.yml.
+# ============================================================================
+
+# Version gate. The plugin refuses to enable on a server outside the supported
+# range and prints the reason to the console.
+COMPATIBILITY:
+  # false = log a warning and start anyway on an unsupported server.
+  # Only turn this off if you know what you are doing; nothing is guaranteed.
+  ENABLED: true
+  # true  = a Minecraft version that cannot be parsed is treated as unsupported.
+  # false = an unparseable version is allowed through with a warning.
+  STRICT: true
+
+DATABASE:
+  # SQLITE (default, no setup) or MYSQL / MARIADB.
+  TYPE: SQLITE
+  SQLITE:
+    FILE: spawners.db
+  MYSQL:
+    HOST: localhost
+    PORT: 3306
+    DATABASE: ultimatevirtualspawner
+    USERNAME: root
+    PASSWORD: ''
+    USE_SSL: false
+
+ECONOMY:
+  # Where player money lives:
+  #   INTERNAL - built into this plugin, stored in its own database. Nothing else
+  #              to install; /balance /baltop /pay /eco are handled here.
+  #   VAULT    - defer to an external economy plugin (EssentialsX, CMI, ...)
+  #              through Vault. Requires Vault plus that plugin.
+  #   AUTO     - use Vault when an economy provider is registered, otherwise fall
+  #              back to INTERNAL.
+  # Changing this needs a full server restart, not /spawner reload.
+  PROVIDER: VAULT
+
+  # Shown wherever money is printed.
+  CURRENCY_SYMBOL: '$'
+  # true = "$1,500", false = "1,500$"
+  SYMBOL_BEFORE_AMOUNT: true
+  # true  = 1.5K / 2.3M style, false = 1,500 / 2,300,000 style.
+  COMPACT_FORMAT: true
+
+  # Only used when the built-in economy is active.
+  INTERNAL:
+    # Balance a player starts with the first time they are paid or checked.
+    STARTING_BALANCE: 0.0
+    # Rounding precision for every balance change. 2 = cents.
+    DECIMAL_PLACES: 2
+    # Allow balances below zero (debt). Blocks withdrawals when false.
+    ALLOW_NEGATIVE: false
+    # Hard cap per player. 0 = no limit.
+    MAXIMUM_BALANCE: 0
+    # Names other plugins see through Vault.
+    CURRENCY_NAME_SINGULAR: 'Dollar'
+    CURRENCY_NAME_PLURAL: 'Dollars'
+    # Publish this economy to Vault so shops and other plugins share these
+    # balances instead of keeping a second, separate pot of money.
+    REGISTER_WITH_VAULT: true
+    # Player-to-player transfers via /pay.
+    ALLOW_PAY: true
+    MINIMUM_PAY: 0.01
+    # Default number of entries shown by /baltop.
+    BALTOP_SIZE: 10

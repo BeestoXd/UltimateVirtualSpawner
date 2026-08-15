@@ -1,0 +1,113 @@
+name: UltimateVirtualSpawner
+version: ${project.version}
+main: com.bx.ultimateVirtualSpawner.UltimateVirtualSpawner
+api-version: "1.21"
+folia-supported: ${folia.supported}
+author: bx
+description: >-
+  Virtual mob spawners with stacking, virtual storage, drop filters, XP and selling.
+  Supported: Paper/Spigot/Bukkit ${paper.supported.min}-${paper.supported.max},
+  Folia ${folia.supported.min}-${folia.supported.max}.
+softdepend:
+  - PlaceholderAPI
+  - Vault
+
+# Downloaded by the server on first start; keeps the plugin jar small.
+libraries:
+  - org.xerial:sqlite-jdbc:${sqlite.version}
+  - com.mysql:mysql-connector-j:${mysql.version}
+
+commands:
+  spawner:
+    description: Manage virtual spawners
+    usage: /spawner [give|info|panel|split|types|remove|reload|version]
+    aliases:
+      - spawners
+      - uvs
+      - virtualspawner
+    permission: ultimatevirtualspawner.command.spawner
+    permission-message: "&cYou do not have permission to use /spawner."
+
+  # Built-in economy. Active only while ECONOMY.PROVIDER is INTERNAL (or AUTO with
+  # no external economy); otherwise these defer to the plugin that owns money.
+  balance:
+    description: Show your balance
+    usage: /balance [player]
+    aliases:
+      - bal
+      - money
+      - uvsbalance
+    permission: ultimatevirtualspawner.command.balance
+    permission-message: "&cYou do not have permission to use /balance."
+  baltop:
+    description: Show the richest players
+    usage: /baltop [size]
+    aliases:
+      - balancetop
+      - moneytop
+    permission: ultimatevirtualspawner.command.baltop
+    permission-message: "&cYou do not have permission to use /baltop."
+  pay:
+    description: Send money to another player
+    usage: /pay <player> <amount>
+    permission: ultimatevirtualspawner.command.pay
+    permission-message: "&cYou do not have permission to use /pay."
+  eco:
+    description: Administrate player balances
+    usage: /eco <give|take|set|reset> <player> [amount]
+    aliases:
+      - economy
+      - uvseco
+    permission: ultimatevirtualspawner.command.eco
+    permission-message: "&cYou do not have permission to use /eco."
+
+permissions:
+  ultimatevirtualspawner.*:
+    description: Grants every UltimateVirtualSpawner permission
+    default: op
+    children:
+      ultimatevirtualspawner.command.spawner: true
+      ultimatevirtualspawner.admin.spawner: true
+      ultimatevirtualspawner.admin.spawner.seeall: true
+      ultimatevirtualspawner.spawner.bypass: true
+      ultimatevirtualspawner.command.balance: true
+      ultimatevirtualspawner.command.balance.others: true
+      ultimatevirtualspawner.command.baltop: true
+      ultimatevirtualspawner.command.pay: true
+      ultimatevirtualspawner.command.eco: true
+
+  ultimatevirtualspawner.command.spawner:
+    description: Access to the /spawner command
+    default: true
+
+  ultimatevirtualspawner.command.balance:
+    description: Check your own balance
+    default: true
+
+  ultimatevirtualspawner.command.balance.others:
+    description: Check another player's balance
+    default: op
+
+  ultimatevirtualspawner.command.baltop:
+    description: View the richest players
+    default: true
+
+  ultimatevirtualspawner.command.pay:
+    description: Send money to another player
+    default: true
+
+  ultimatevirtualspawner.command.eco:
+    description: Give, take, set and reset player balances
+    default: op
+
+  ultimatevirtualspawner.admin.spawner:
+    description: Full administrative access to every managed spawner
+    default: op
+
+  ultimatevirtualspawner.admin.spawner.seeall:
+    description: Bypass the anti-ESP spawner concealment
+    default: op
+
+  ultimatevirtualspawner.spawner.bypass:
+    description: Break spawners without a Silk Touch pickaxe while REQUIRE_SILK_TOUCH is enabled
+    default: op

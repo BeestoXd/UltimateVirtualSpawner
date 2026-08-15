@@ -1,0 +1,18 @@
+# ============================================================================
+#  UltimateVirtualSpawner - sound effects
+#
+#  Format: <sound key>|<volume>|<pitch>
+#  Namespaced keys ("minecraft:ui.button.click") and legacy enum names
+#  ("UI_BUTTON_CLICK") both work. Leave a value empty to mute that event.
+# ============================================================================
+
+SPAWNERS:
+  OPEN-MENU: minecraft:block.chest.open|1.0|1.0
+  COLLECT-LOOT: minecraft:entity.item.pickup|1.0|1.0
+  DROP-LOOT: minecraft:entity.item.pickup|1.0|1.2
+  COLLECT-XP: minecraft:entity.experience_orb.pickup|1.0|1.0
+  SELL-CONFIRM-OPEN: minecraft:ui.button.click|1.0|1.0
+  SELL-SUCCESS: minecraft:entity.villager.yes|1.0|1.0
+  SELL-CANCEL: minecraft:ui.button.click|1.0|0.8
+  FILTER-OPEN: minecraft:ui.button.click|1.0|1.2
+  FILTER-TOGGLE: minecraft:ui.button.click|1.0|1.0
